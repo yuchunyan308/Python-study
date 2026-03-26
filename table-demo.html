@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>移动端固定表头表格</title>
+<style>
+  /* ===== 全局变量 ===== */
+  :root {
+    --col-fixed-width: 90px;   /* 固定第一列宽度 */
+    --col-min-width: 100px;    /* 其余列最小宽度 */
+    --row-height: 44px;        /* 行高 */
+    --header-height: 48px;     /* 表头行高 */
+    --font: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+
+    --color-bg: #f0f4f8;
+    --color-surface: #ffffff;
+    --color-header-bg: #1a2744;
+    --color-header-text: #e8f0fe;
+    --color-fixed-col-bg: #f7f9fc;
+    --color-fixed-col-header: #243254;
+    --color-border: #dce3ef;
+    --color-row-even: #f7f9fc;
+    --color-row-odd: #ffffff;
+    --color-text: #2d3a52;
+    --color-text-muted: #7b8aab;
+    --color-accent: #4f7cff;
+    --shadow-table: 0 4px 24px rgba(26,39,68,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--color-bg);
+    font-family: var(--font);
+    min-height: 100vh;
+    padding: 16px 0 32px;
+  }
+
+  .page-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-text);
+    padding: 0 16px 12px;
+    letter-spacing: 0.02em;
+  }
+  .page-title span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    margin-left: 8px;
+  }
+
+  /* ===== 表格容器 ===== */
+  .table-wrapper {
+    margin: 0 16px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-table);
+    background: var(--color-surface);
+    position: relative;
+  }
+
+  /* 整体可滚动区（水平+垂直） */
+  .table-scroll {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 70vh;
+    /* 隐藏滚动条但保留功能 */
+    scrollbar-width: thin;
+    scrollbar-color: #c0c8dc transparent;
+  }
+  .table-scroll::-webkit-scrollbar { height: 5px; width: 5px; }
+  .table-scroll::-webkit-scrollbar-thumb { background: #c0c8dc; border-radius: 4px; }
+
+  /* ===== 核心：fixed 表格布局 ===== */
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: max-content;
+    font-size: 13px;
+    color: var(--color-text);
+  }
+
+  /* ===== 固定表头（第一行） ===== */
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    height: var(--header-height);
+    background: var(--color-header-bg);
+    color: var(--color-header-text);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    padding: 0 14px;
+    border-bottom: 2px solid var(--color-accent);
+    text-align: left;
+  }
+
+  /* ===== 固定第一列（header + body） ===== */
+  thead th:first-child,
+  tbody td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 4;        /* 比普通sticky th 更高，覆盖同行其他列 */
+    min-width: var(--col-fixed-width);
+    max-width: var(--col-fixed-width);
+  }
+
+  thead th:first-child {
+    z-index: 5;        /* 左上角：最高层级 */
+    background: var(--color-fixed-col-header);
+  }
+
+  tbody td:first-child {
+    background: var(--color-fixed-col-bg);
+    color: var(--color-accent);
+    font-weight: 600;
+    border-right: 2px solid var(--color-border);
+  }
+
+  /* 滚动时第一列右侧阴影提示 */
+  .table-scroll.scrolled-x tbody td:first-child,
+  .table-scroll.scrolled-x thead th:first-child {
+    box-shadow: 4px 0 10px -2px rgba(26,39,68,0.12);
+  }
+
+  /* ===== 普通列 ===== */
+  thead th:not(:first-child) {
+    min-width: var(--col-min-width);
+  }
+
+  tbody td {
+    height: var(--row-height);
+    padding: 0 14px;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+  }
+
+  tbody tr:nth-child(even) td { background: var(--color-row-even); }
+  tbody tr:nth-child(odd) td  { background: var(--color-row-odd); }
+
+  /* 偶数行的固定列也需要覆盖背景 */
+  tbody tr:nth-child(even) td:first-child { background: #edf1f8; }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* hover 高亮 */
+  tbody tr:hover td { background: #e8efff !important; transition: background 0.15s; }
+  tbody tr:hover td:first-child { background: #d6e4ff !important; }
+
+  /* 数字列右对齐 */
+  td.num, th.num { text-align: right; }
+
+  /* 滚动提示渐变遮罩（右侧） */
+  .table-fade-right {
+    pointer-events: none;
+    position: absolute;
+    top: 0; right: 0;
+    width: 32px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255,255,255,0.7), transparent);
+    border-radius: 0 14px 14px 0;
+    transition: opacity 0.2s;
+  }
+  .table-scroll.scrolled-end .table-fade-right { opacity: 0; }
+
+  /* ===== 底部信息 ===== */
+  .table-meta {
+    padding: 10px 16px 0;
+    font-size: 11px;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .table-meta::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<p class="page-title">数据总览 <span>左右滑动查看更多</span></p>
+
+<div class="table-wrapper">
+  <div class="table-scroll" id="tableScroll">
+    <table id="dataTable"></table>
+    <div class="table-fade-right"></div>
+  </div>
+</div>
+
+<p class="table-meta" id="tableMeta"></p>
+
+<script>
+/* ============================================================
+   ✅ 在这里替换你的数据
+   - columns : 列定义数组，name=显示名，key=字段key，align可选'right'/'left'
+   - rows    : 数据数组，每项为一个对象，key 与 columns[].key 对应
+   ============================================================ */
+
+const columns = [
+  { name: '姓名',   key: 'name' },      // ← 第一列自动固定，无需额外配置
+  { name: '部门',   key: 'dept' },
+  { name: '职级',   key: 'level' },
+  { name: '1月',    key: 'm1',  align: 'right' },
+  { name: '2月',    key: 'm2',  align: 'right' },
+  { name: '3月',    key: 'm3',  align: 'right' },
+  { name: '4月',    key: 'm4',  align: 'right' },
+  { name: '5月',    key: 'm5',  align: 'right' },
+  { name: '6月',    key: 'm6',  align: 'right' },
+  { name: '7月',    key: 'm7',  align: 'right' },
+  { name: '8月',    key: 'm8',  align: 'right' },
+  { name: '9月',    key: 'm9',  align: 'right' },
+  { name: '10月',   key: 'm10', align: 'right' },
+  { name: '11月',   key: 'm11', align: 'right' },
+  { name: '12月',   key: 'm12', align: 'right' },
+  { name: '上半年', key: 'h1',  align: 'right' },
+  { name: '下半年', key: 'h2',  align: 'right' },
+  { name: '年度总计',key: 'total', align: 'right' },
+  { name: '达成率', key: 'rate' },
+  { name: '同比',   key: 'yoy' },
+  { name: '环比',   key: 'mom' },
+  { name: '排名',   key: 'rank', align: 'right' },
+  { name: '状态',   key: 'status' },
+  { name: '备注A',  key: 'noteA' },
+  { name: '备注B',  key: 'noteB' },
+  { name: '备注C',  key: 'noteC' },
+  { name: '备注D',  key: 'noteD' },
+  { name: '备注E',  key: 'noteE' },
+  { name: '备注F',  key: 'noteF' },
+  { name: '操作',   key: 'action' },
+];
+
+// 生成示例数据（10行 × 30列）
+const names   = ['张伟','李娜','王芳','赵磊','陈静','刘洋','周敏','吴超','徐丽','孙强'];
+const depts   = ['技术部','产品部','市场部','运营部','财务部'];
+const levels  = ['P4','P5','P6','P7','M1'];
+const statuses= ['✅ 达标','⚠️ 待观察','❌ 未达标'];
+
+const rows = names.map((name, i) => {
+  const monthly = Array.from({length: 12}, () => Math.floor(Math.random()*80+20));
+  const h1 = monthly.slice(0,6).reduce((a,b)=>a+b,0);
+  const h2 = monthly.slice(6).reduce((a,b)=>a+b,0);
+  const total = h1 + h2;
+  return {
+    name,
+    dept:   depts[i % depts.length],
+    level:  levels[i % levels.length],
+    m1: monthly[0], m2: monthly[1], m3: monthly[2],
+    m4: monthly[3], m5: monthly[4], m6: monthly[5],
+    m7: monthly[6], m8: monthly[7], m9: monthly[8],
+    m10:monthly[9], m11:monthly[10],m12:monthly[11],
+    h1, h2, total,
+    rate:  (Math.random()*40+80).toFixed(1) + '%',
+    yoy:   (Math.random()*20-5).toFixed(1)  + '%',
+    mom:   (Math.random()*10-3).toFixed(1)  + '%',
+    rank:  i + 1,
+    status: statuses[i % statuses.length],
+    noteA: '—', noteB: '—', noteC: '—',
+    noteD: '—', noteE: '—', noteF: '—',
+    action: '查看',
+  };
+});
+
+/* ============================================================
+   以下为渲染逻辑，通常无需修改
+   ============================================================ */
+function renderTable() {
+  const table = document.getElementById('dataTable');
+
+  // 表头
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  columns.forEach((col, i) => {
+    const th = document.createElement('th');
+    th.textContent = col.name;
+    if (col.align === 'right') th.classList.add('num');
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // 表体
+  const tbody = document.createElement('tbody');
+  rows.forEach(row => {
+    const tr = document.createElement('tr');
+    columns.forEach(col => {
+      const td = document.createElement('td');
+      td.textContent = row[col.key] ?? '—';
+      if (col.align === 'right') td.classList.add('num');
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  // 元信息
+  document.getElementById('tableMeta').textContent =
+    `共 ${rows.length} 行 × ${columns.length} 列`;
+}
+
+// 滚动状态检测（更新阴影和遮罩）
+function initScrollDetect() {
+  const scroller = document.getElementById('tableScroll');
+  scroller.addEventListener('scroll', () => {
+    scroller.classList.toggle('scrolled-x', scroller.scrollLeft > 4);
+    const atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 4;
+    scroller.classList.toggle('scrolled-end', atEnd);
+  }, { passive: true });
+}
+
+renderTable();
+initScrollDetect();
+</script>
+</body>
+</html>
