@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-03-30T22:55:10.316729Z",
+  "query": "*:*  (全站统计)",
+  "api_total_datasets": 308472,
+  "top_formats": {
+    "CSV": 147209,
+    "HTML": 89341,
+    "PDF": 72104,
+    "JSON": 45882,
+    "XLSX": 38751,
+    "ZIP": 31203,
+    "XML": 22891,
+    "GeoJSON": 18445,
+    "SHP": 14328,
+    "KML": 9112,
+    "API": 8754,
+    "NetCDF": 6321,
+    "DOCX": 4892,
+    "TXT": 4103,
+    "ODP": 2567
+  },
+  "top_organizations": {
+    "Census Bureau": 12841,
+    "National Oceanic and Atmospheric Admin.": 11203,
+    "U.S. Geological Survey": 10872,
+    "Department of Health and Human Services": 9541,
+    "NASA Goddard Space Flight Center": 8932,
+    "Environmental Protection Agency": 8104,
+    "Department of Transportation": 7891,
+    "Energy Information Administration": 7203,
+    "Department of Agriculture": 6892,
+    "National Institutes of Health": 6341,
+    "Bureau of Labor Statistics": 5982,
+    "Federal Emergency Management Agency": 5714,
+    "Food and Drug Administration": 5102,
+    "Federal Aviation Administration": 4892,
+    "Centers for Disease Control": 4751
+  }
+}

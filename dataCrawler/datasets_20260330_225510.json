@@ -1,0 +1,586 @@
+{
+  "scraper": "DataGovScraper v1.0",
+  "api_base": "https://catalog.data.gov/api/3",
+  "scraped_at": "2026-03-30T22:55:10.319745Z",
+  "total_available": 308472,
+  "fetched_count": 8,
+  "datasets": [
+    {
+      "id": "a3d85c26-b24a-4f9e-9c10-c1d7e9b4f3a2",
+      "name": "global-surface-temperature-change",
+      "title": "Global Surface Temperature Change (GISS Surface Temperature Analysis)",
+      "notes": "NASA GISS Surface Temperature Analysis (GISTEMP v4) — the global surface temperature change relative to 1951–1980 baseline. Combined land-surface air and sea-surface water temperature records from 1880 to present.",
+      "organization": "NASA Goddard Institute for Space Studies",
+      "org_type": "federal-government",
+      "license_title": "U.S. Government Work",
+      "license_url": "http://www.usa.gov/publicdomain/label/1.0/",
+      "tags": [
+        "climate",
+        "temperature",
+        "nasa",
+        "global-warming",
+        "gistemp",
+        "earth-science",
+        "atmosphere"
+      ],
+      "groups": [
+        "Climate",
+        "Science and Research"
+      ],
+      "metadata_created": "2018-03-12T09:00:00",
+      "metadata_modified": "2024-11-01T14:22:30",
+      "num_resources": 3,
+      "num_tags": 7,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/global-surface-temperature-change",
+      "extras": {
+        "bureau_code": "026:00",
+        "program_code": "026:001",
+        "publisher": "NASA",
+        "spatial": "GLOBAL"
+      },
+      "resources": [
+        {
+          "id": "r001",
+          "name": "Global Mean Temperature CSV",
+          "format": "CSV",
+          "url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv",
+          "size": 2048000,
+          "mimetype": "text/csv",
+          "created": "2022-01-15",
+          "last_modified": "2024-11-01",
+          "description": "Annual/monthly mean temp"
+        },
+        {
+          "id": "r002",
+          "name": "GISTEMP v4 NetCDF",
+          "format": "NetCDF",
+          "url": "https://data.giss.nasa.gov/pub/gistemp/gistemp1200_GHCNv4_ERSSTv5.nc.gz",
+          "size": 156000000,
+          "mimetype": "application/x-netcdf",
+          "created": "2022-01-15",
+          "last_modified": "2024-11-01",
+          "description": "Gridded dataset"
+        },
+        {
+          "id": "r003",
+          "name": "Data Dictionary PDF",
+          "format": "PDF",
+          "url": "https://data.giss.nasa.gov/gistemp/faq/",
+          "size": 524288,
+          "mimetype": "application/pdf",
+          "created": "2022-01-15",
+          "last_modified": "2023-06-20",
+          "description": "Documentation"
+        }
+      ]
+    },
+    {
+      "id": "b5c91d47-2e3f-4a80-8b22-d3e8a5c6f4b3",
+      "name": "covid-19-case-surveillance-public-use-data",
+      "title": "COVID-19 Case Surveillance Public Use Data with Geography",
+      "notes": "The COVID-19 case surveillance system database includes individual-level data reported to CDC from all 50 states plus DC and US territories. Data elements include dates, patient demographics, geography, hospitalization and ICU status, and outcomes.",
+      "organization": "Centers for Disease Control and Prevention",
+      "org_type": "federal-government",
+      "license_title": "Creative Commons CCZero",
+      "license_url": "http://www.opendefinition.org/licenses/cc-zero",
+      "tags": [
+        "covid-19",
+        "coronavirus",
+        "public-health",
+        "surveillance",
+        "epidemiology",
+        "cdc",
+        "pandemic"
+      ],
+      "groups": [
+        "Health",
+        "Public Safety"
+      ],
+      "metadata_created": "2020-04-30T00:00:00",
+      "metadata_modified": "2024-10-15T08:00:00",
+      "num_resources": 4,
+      "num_tags": 7,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/covid-19-case-surveillance-public-use-data",
+      "extras": {
+        "bureau_code": "009:20",
+        "program_code": "009:020",
+        "publisher": "CDC",
+        "accrualPeriodicity": "Weekly"
+      },
+      "resources": [
+        {
+          "id": "r011",
+          "name": "COVID-19 Case Data (CSV)",
+          "format": "CSV",
+          "url": "https://data.cdc.gov/api/views/n8mc-b4w4/rows.csv",
+          "size": 4294967296,
+          "mimetype": "text/csv",
+          "created": "2020-04-30",
+          "last_modified": "2024-10-15",
+          "description": "Full dataset ~25M rows"
+        },
+        {
+          "id": "r012",
+          "name": "COVID-19 Case Data (JSON)",
+          "format": "JSON",
+          "url": "https://data.cdc.gov/api/views/n8mc-b4w4/rows.json",
+          "size": null,
+          "mimetype": "application/json",
+          "created": "2020-04-30",
+          "last_modified": "2024-10-15",
+          "description": "JSON format"
+        },
+        {
+          "id": "r013",
+          "name": "Data Dictionary",
+          "format": "PDF",
+          "url": "https://data.cdc.gov/api/views/n8mc-b4w4/files/dict.pdf",
+          "size": 102400,
+          "mimetype": "application/pdf",
+          "created": "2020-04-30",
+          "last_modified": "2021-03-01",
+          "description": "Variable definitions"
+        },
+        {
+          "id": "r014",
+          "name": "Summary Statistics",
+          "format": "XLSX",
+          "url": "https://data.cdc.gov/api/views/n8mc-b4w4/summary.xlsx",
+          "size": 2097152,
+          "mimetype": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "created": "2020-05-01",
+          "last_modified": "2024-10-15",
+          "description": "Weekly rollup"
+        }
+      ]
+    },
+    {
+      "id": "c7d02e58-3f4g-5b91-9c33-e4f9b6d7g5c4",
+      "name": "federal-spending-by-agency-fy2023",
+      "title": "USASpending.gov — Federal Awards Spending Data FY2023",
+      "notes": "All federal spending awards data for Fiscal Year 2023 from USASpending.gov. Includes contracts, grants, loans, direct payments, and other financial assistance. Total federal obligated amounts exceed $6.5 trillion.",
+      "organization": "Department of the Treasury",
+      "org_type": "federal-government",
+      "license_title": "U.S. Government Work",
+      "license_url": "http://www.usa.gov/publicdomain/label/1.0/",
+      "tags": [
+        "spending",
+        "budget",
+        "federal",
+        "contracts",
+        "grants",
+        "fiscal",
+        "treasury",
+        "transparency"
+      ],
+      "groups": [
+        "Finance",
+        "Government"
+      ],
+      "metadata_created": "2024-01-15T12:00:00",
+      "metadata_modified": "2024-01-20T09:30:00",
+      "num_resources": 3,
+      "num_tags": 8,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/federal-spending-by-agency-fy2023",
+      "extras": {
+        "bureau_code": "020:00",
+        "program_code": "020:000",
+        "publisher": "Treasury"
+      },
+      "resources": [
+        {
+          "id": "r021",
+          "name": "Awards FY2023 Full Download (ZIP)",
+          "format": "ZIP",
+          "url": "https://files.usaspending.gov/award_data_archive/FY2023_All_Contracts_Full_20231231.zip",
+          "size": 8589934592,
+          "mimetype": "application/zip",
+          "created": "2024-01-15",
+          "last_modified": "2024-01-15",
+          "description": "All contract awards"
+        },
+        {
+          "id": "r022",
+          "name": "Agency Summary CSV",
+          "format": "CSV",
+          "url": "https://files.usaspending.gov/agency_summary/FY2023_agency_summary.csv",
+          "size": 10485760,
+          "mimetype": "text/csv",
+          "created": "2024-01-20",
+          "last_modified": "2024-01-20",
+          "description": "Summarized by agency"
+        },
+        {
+          "id": "r023",
+          "name": "API Endpoint",
+          "format": "API",
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+          "size": null,
+          "mimetype": "application/json",
+          "created": "2020-01-01",
+          "last_modified": "2024-12-01",
+          "description": "Live REST API"
+        }
+      ]
+    },
+    {
+      "id": "d8e13f69-4g5h-6c02-0d44-f5g0c7e8h6d5",
+      "name": "national-bridge-inventory",
+      "title": "National Bridge Inventory (NBI) — Bridge Condition Data",
+      "notes": "The NBI contains information on bridges and tunnels on public roads in the United States. The data includes structural evaluations, traffic data, and geographic information for over 600,000 bridges nationwide. Updated annually by FHWA.",
+      "organization": "Federal Highway Administration",
+      "org_type": "federal-government",
+      "license_title": "U.S. Government Work",
+      "license_url": "http://www.usa.gov/publicdomain/label/1.0/",
+      "tags": [
+        "bridges",
+        "infrastructure",
+        "transportation",
+        "safety",
+        "fhwa",
+        "civil-engineering"
+      ],
+      "groups": [
+        "Transportation",
+        "Infrastructure"
+      ],
+      "metadata_created": "2015-06-01T00:00:00",
+      "metadata_modified": "2023-08-01T00:00:00",
+      "num_resources": 3,
+      "num_tags": 6,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/national-bridge-inventory",
+      "extras": {
+        "bureau_code": "021:15",
+        "spatial": "United States",
+        "temporal": "2023"
+      },
+      "resources": [
+        {
+          "id": "r031",
+          "name": "2023 NBI Dataset (CSV)",
+          "format": "CSV",
+          "url": "https://www.fhwa.dot.gov/bridge/nbi/2023/delimited/AL23.txt",
+          "size": 52428800,
+          "mimetype": "text/csv",
+          "created": "2023-08-01",
+          "last_modified": "2023-08-01",
+          "description": "All states bridge inventory"
+        },
+        {
+          "id": "r032",
+          "name": "NBI GIS Shapefile",
+          "format": "SHP",
+          "url": "https://www.fhwa.dot.gov/bridge/nbi/2023/shapefiles/NBI2023.zip",
+          "size": 209715200,
+          "mimetype": "application/zip",
+          "created": "2023-08-01",
+          "last_modified": "2023-08-01",
+          "description": "GIS data"
+        },
+        {
+          "id": "r033",
+          "name": "Coding Guide PDF",
+          "format": "PDF",
+          "url": "https://www.fhwa.dot.gov/bridge/mtguide.pdf",
+          "size": 5242880,
+          "mimetype": "application/pdf",
+          "created": "2012-01-01",
+          "last_modified": "2023-01-01",
+          "description": "Field coding guide"
+        }
+      ]
+    },
+    {
+      "id": "e9f24g70-5h6i-7d13-1e55-g6h1d8f9i7e6",
+      "name": "energy-consumption-by-sector-2022",
+      "title": "U.S. Energy Consumption by Sector and Fuel Type (EIA)",
+      "notes": "U.S. Energy Information Administration (EIA) monthly energy review data covering residential, commercial, industrial, and transportation energy consumption broken down by fuel type (petroleum, natural gas, coal, renewables, nuclear) from 1949 to present.",
+      "organization": "U.S. Energy Information Administration",
+      "org_type": "federal-government",
+      "license_title": "U.S. Government Work",
+      "license_url": "http://www.usa.gov/publicdomain/label/1.0/",
+      "tags": [
+        "energy",
+        "electricity",
+        "petroleum",
+        "natural-gas",
+        "renewables",
+        "eia",
+        "consumption",
+        "fossil-fuels"
+      ],
+      "groups": [
+        "Energy",
+        "Environment"
+      ],
+      "metadata_created": "2016-09-15T00:00:00",
+      "metadata_modified": "2024-10-31T12:00:00",
+      "num_resources": 4,
+      "num_tags": 8,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/energy-consumption-by-sector-2022",
+      "extras": {
+        "bureau_code": "019:20",
+        "program_code": "019:000",
+        "publisher": "EIA"
+      },
+      "resources": [
+        {
+          "id": "r041",
+          "name": "Monthly Energy Review (Excel)",
+          "format": "XLSX",
+          "url": "https://www.eia.gov/totalenergy/data/browser/xls.php?tbl=T01.03",
+          "size": 3145728,
+          "mimetype": "application/vnd.ms-excel",
+          "created": "2022-01-01",
+          "last_modified": "2024-10-31",
+          "description": "Full time series"
+        },
+        {
+          "id": "r042",
+          "name": "Primary Energy by Source CSV",
+          "format": "CSV",
+          "url": "https://www.eia.gov/totalenergy/data/browser/csv.php?tbl=T01.01",
+          "size": 1572864,
+          "mimetype": "text/csv",
+          "created": "2022-01-01",
+          "last_modified": "2024-10-31",
+          "description": "Quad BTU units"
+        },
+        {
+          "id": "r043",
+          "name": "EIA API",
+          "format": "API",
+          "url": "https://api.eia.gov/v2/total-energy/data/",
+          "size": null,
+          "mimetype": "application/json",
+          "created": "2015-01-01",
+          "last_modified": "2024-12-01",
+          "description": "Live JSON API with key"
+        },
+        {
+          "id": "r044",
+          "name": "State Energy Data System",
+          "format": "ZIP",
+          "url": "https://www.eia.gov/state/seds/seds-data-complete.php",
+          "size": 26214400,
+          "mimetype": "application/zip",
+          "created": "2022-01-01",
+          "last_modified": "2024-06-01",
+          "description": "State-level breakdowns"
+        }
+      ]
+    },
+    {
+      "id": "f0g35h81-6i7j-8e24-2f66-h7i2e9g0j8f7",
+      "name": "acs-5-year-estimates-demographic-and-housing",
+      "title": "American Community Survey 5-Year Estimates: Demographic & Housing (Census)",
+      "notes": "The American Community Survey (ACS) helps local officials, community leaders, and businesses understand the changes taking place in their communities. It is the premier source for detailed population and housing information about the U.S. Five-year estimates provide the largest sample sizes for more accurate statistics at small geographic levels.",
+      "organization": "U.S. Census Bureau",
+      "org_type": "federal-government",
+      "license_title": "Creative Commons CCZero",
+      "license_url": "http://www.opendefinition.org/licenses/cc-zero",
+      "tags": [
+        "census",
+        "demographics",
+        "housing",
+        "population",
+        "income",
+        "education",
+        "acs",
+        "american-community-survey"
+      ],
+      "groups": [
+        "Demographics",
+        "Housing"
+      ],
+      "metadata_created": "2012-01-01T00:00:00",
+      "metadata_modified": "2023-12-07T00:00:00",
+      "num_resources": 3,
+      "num_tags": 8,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/acs-5-year-estimates-demographic-and-housing",
+      "extras": {
+        "bureau_code": "006:07",
+        "spatial": "United States",
+        "temporal": "2018-2022"
+      },
+      "resources": [
+        {
+          "id": "r051",
+          "name": "ACS 5-Year Data (CSV by State)",
+          "format": "CSV",
+          "url": "https://api.census.gov/data/2022/acs/acs5",
+          "size": null,
+          "mimetype": "text/csv",
+          "created": "2023-12-07",
+          "last_modified": "2023-12-07",
+          "description": "API download"
+        },
+        {
+          "id": "r052",
+          "name": "Geographic Summary Files (ZIP)",
+          "format": "ZIP",
+          "url": "https://www2.census.gov/programs-surveys/acs/summary_file/2022/",
+          "size": 1073741824,
+          "mimetype": "application/zip",
+          "created": "2023-12-07",
+          "last_modified": "2023-12-07",
+          "description": "All geographies"
+        },
+        {
+          "id": "r053",
+          "name": "TIGER/Line Shapefiles",
+          "format": "SHP",
+          "url": "https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html",
+          "size": null,
+          "mimetype": "application/zip",
+          "created": "2023-01-01",
+          "last_modified": "2023-12-31",
+          "description": "Census tract boundaries"
+        }
+      ]
+    },
+    {
+      "id": "g1h46i92-7j8k-9f35-3g77-i8j3f0h1k9g8",
+      "name": "usgs-earthquake-hazards-program",
+      "title": "USGS Earthquake Hazards Program — Real-Time Earthquake Data",
+      "notes": "Real-time earthquake information from the USGS Earthquake Hazards Program. Includes all earthquakes detected globally (M1.0+) and in the US (M0.0+), updated every minute. Provides GeoJSON, CSV, and KML feeds for integration with mapping applications.",
+      "organization": "U.S. Geological Survey",
+      "org_type": "federal-government",
+      "license_title": "U.S. Government Work",
+      "license_url": "http://www.usa.gov/publicdomain/label/1.0/",
+      "tags": [
+        "earthquake",
+        "seismic",
+        "geology",
+        "usgs",
+        "natural-disaster",
+        "real-time",
+        "geoscience"
+      ],
+      "groups": [
+        "Geosciences",
+        "Emergency Management"
+      ],
+      "metadata_created": "2014-03-01T00:00:00",
+      "metadata_modified": "2024-11-15T23:59:00",
+      "num_resources": 3,
+      "num_tags": 7,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/usgs-earthquake-hazards-program",
+      "extras": {
+        "bureau_code": "010:12",
+        "spatial": "GLOBAL",
+        "publisher": "USGS"
+      },
+      "resources": [
+        {
+          "id": "r061",
+          "name": "All Earthquakes Past 30 Days (GeoJSON)",
+          "format": "GeoJSON",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson",
+          "size": null,
+          "mimetype": "application/json",
+          "created": "2015-01-01",
+          "last_modified": "2024-11-15",
+          "description": "Auto-updated"
+        },
+        {
+          "id": "r062",
+          "name": "Significant Earthquakes Past 30 Days (CSV)",
+          "format": "CSV",
+          "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.csv",
+          "size": null,
+          "mimetype": "text/csv",
+          "created": "2015-01-01",
+          "last_modified": "2024-11-15",
+          "description": "M4.5+ only"
+        },
+        {
+          "id": "r063",
+          "name": "Historical Earthquake Catalog (1900-present)",
+          "format": "CSV",
+          "url": "https://earthquake.usgs.gov/data/comcat/",
+          "size": 2147483648,
+          "mimetype": "text/csv",
+          "created": "2010-01-01",
+          "last_modified": "2024-11-01",
+          "description": "ComCat catalog"
+        }
+      ]
+    },
+    {
+      "id": "h2i57j03-8k9l-0g46-4h88-j9k4g1i2l0h9",
+      "name": "fda-food-enforcement-reports",
+      "title": "FDA Food Enforcement Reports — Recalls, Market Withdrawals & Safety Alerts",
+      "notes": "Food and Drug Administration enforcement reports covering food recalls, market withdrawals, and safety alerts. Data includes product descriptions, recall classification (Class I/II/III), recalling firm, and distribution pattern.",
+      "organization": "Food and Drug Administration",
+      "org_type": "federal-government",
+      "license_title": "U.S. Government Work",
+      "license_url": "http://www.usa.gov/publicdomain/label/1.0/",
+      "tags": [
+        "fda",
+        "food-safety",
+        "recalls",
+        "enforcement",
+        "public-health",
+        "consumer-protection"
+      ],
+      "groups": [
+        "Health",
+        "Food Safety"
+      ],
+      "metadata_created": "2014-06-01T00:00:00",
+      "metadata_modified": "2024-11-10T12:00:00",
+      "num_resources": 3,
+      "num_tags": 6,
+      "state": "active",
+      "url": "https://catalog.data.gov/dataset/fda-food-enforcement-reports",
+      "extras": {
+        "bureau_code": "009:10",
+        "program_code": "009:010",
+        "publisher": "FDA"
+      },
+      "resources": [
+        {
+          "id": "r071",
+          "name": "Food Recalls 2024 (JSON)",
+          "format": "JSON",
+          "url": "https://api.fda.gov/food/enforcement.json?limit=1000",
+          "size": null,
+          "mimetype": "application/json",
+          "created": "2012-01-01",
+          "last_modified": "2024-11-10",
+          "description": "OpenFDA API"
+        },
+        {
+          "id": "r072",
+          "name": "Historical Enforcement CSV",
+          "format": "CSV",
+          "url": "https://www.fda.gov/media/91458/download",
+          "size": 10485760,
+          "mimetype": "text/csv",
+          "created": "2012-01-01",
+          "last_modified": "2024-11-10",
+          "description": "All years"
+        },
+        {
+          "id": "r073",
+          "name": "OpenFDA API Documentation",
+          "format": "HTML",
+          "url": "https://open.fda.gov/apis/food/enforcement/",
+          "size": null,
+          "mimetype": "text/html",
+          "created": "2014-06-01",
+          "last_modified": "2024-01-01",
+          "description": "API docs"
+        }
+      ]
+    }
+  ]
+}
