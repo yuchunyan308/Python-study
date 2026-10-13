@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>傅里叶变换可视化实验室</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#17243b;--muted:#66758d;--line:#dbe4f0;--blue:#1769ff;--teal:#079b85;--red:#ed4545;--shadow:0 8px 28px rgba(32,57,92,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;line-height:1.55}
+header{background:linear-gradient(120deg,#10284e,#1d477e);color:white;padding:26px max(20px,calc((100vw - 1440px)/2));}
+header h1{margin:0 0 7px;font-size:clamp(24px,3vw,36px);letter-spacing:.2px}header p{margin:0;color:#dce8ff;font-size:15px}
+main{max-width:1440px;margin:20px auto;padding:0 18px 32px;display:grid;grid-template-columns:270px minmax(360px,1.6fr) minmax(280px,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px;box-shadow:var(--shadow);min-width:0}
+h2{font-size:17px;margin:0 0 13px}h3{font-size:14px;margin:0 0 8px}.muted{color:var(--muted);font-size:12px}
+.control{margin:0 0 14px}.control label{display:flex;justify-content:space-between;gap:8px;font-size:13px;font-weight:650;margin-bottom:5px}
+input[type=range]{width:100%;accent-color:var(--blue);cursor:pointer}
+input[type=number],select{border:1px solid #cbd7e7;background:#fff;border-radius:7px;padding:7px 8px;color:var(--ink);font:inherit;width:100%}
+.row{display:grid;grid-template-columns:1fr 76px;align-items:center;gap:10px}
+button{border:1px solid #c8d7ed;background:#fff;border-radius:9px;padding:10px 12px;font:inherit;font-weight:700;color:#243d61;cursor:pointer;transition:.15s}
+button:hover{transform:translateY(-1px);border-color:var(--blue)}button.primary{background:var(--blue);border-color:var(--blue);color:white;width:100%}.buttons{display:grid;gap:8px;margin-top:16px}
+.chart-card{margin-bottom:12px;padding:13px 14px 9px}.chart-card h2{margin-bottom:4px}.chart{width:100%;height:245px;display:block}.chart.small{height:140px}
+.middle{min-width:0}.side p{font-size:13px;margin:7px 0}.formula{font-family:Georgia,"Times New Roman",serif;text-align:center;font-size:20px;padding:7px 0;overflow-wrap:anywhere}.bullet{padding-left:19px;margin:7px 0;font-size:13px}.bullet li{margin:5px 0}
+.pill{display:inline-block;background:#edf4ff;color:#2056aa;padding:3px 8px;border-radius:99px;font-size:12px;font-weight:700}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.stat{background:#f7f9fd;border:1px solid var(--line);border-radius:9px;padding:9px}.stat span{display:block;font-size:11px;color:var(--muted)}.stat strong{font-size:18px}
+.examples{grid-column:1/3}.example-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.example{border:1px solid var(--line);border-radius:9px;padding:10px;cursor:pointer}.example:hover{border-color:var(--blue);background:#f7faff}.example b{font-size:13px}.example canvas{display:block;width:100%;height:70px;margin:5px 0}.example p{font-size:11px;color:var(--muted);margin:0}
+.takeaway{grid-column:3;grid-row:2;background:linear-gradient(140deg,#eff7ff,#fff);border-color:#bfd7ff}.takeaway li{font-size:13px;margin:8px 0}
+footer{max-width:1440px;margin:-12px auto 24px;padding:0 18px;color:var(--muted);font-size:12px}
+@media(max-width:1050px){main{grid-template-columns:250px minmax(0,1fr)}.side{grid-column:1/3}.examples{grid-column:1/3}.takeaway{grid-column:1/3;grid-row:auto}.example-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:680px){header{padding:22px 16px}main{display:flex;flex-direction:column;padding:0 10px;margin:10px auto}.chart{height:210px}.example-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.card{padding:13px}.examples,.takeaway,.side{grid-column:auto}}
+</style>
+</head>
+<body>
+<header>
+  <h1>傅里叶变换 · 可视化实验室</h1>
+  <p>调整信号参数，观察时域波形如何对应到频域谱线。用互动实验理解：复杂信号可以分解成不同频率的成分。</p>
+</header>
+<main>
+  <section class="card">
+    <h2>信号设置</h2>
+    <div class="control"><label for="kind">信号类型</label><select id="kind">
+      <option value="mixed">复合正弦波（多频率）</option><option value="sine">单一正弦波</option><option value="square">方波</option><option value="triangle">三角波</option><option value="saw">锯齿波</option><option value="noise">白噪声</option><option value="pulse">脉冲信号</option>
+    </select></div>
+    <div id="freqControls">
+      <div class="control"><label for="f1">频率 1 <output id="f1v">5 Hz</output></label><input id="f1" type="range" min="1" max="40" value="5"></div>
+      <div class="control"><label for="a1">振幅 1 <output id="a1v">1.0</output></label><input id="a1" type="range" min="0" max="2" step=".1" value="1"></div>
+      <div class="control"><label for="f2">频率 2 <output id="f2v">15 Hz</output></label><input id="f2" type="range" min="1" max="40" value="15"></div>
+      <div class="control"><label for="a2">振幅 2 <output id="a2v">0.6</output></label><input id="a2" type="range" min="0" max="2" step=".1" value=".6"></div>
+      <div class="control"><label for="f3">频率 3 <output id="f3v">30 Hz</output></label><input id="f3" type="range" min="1" max="40" value="30"></div>
+      <div class="control"><label for="a3">振幅 3 <output id="a3v">0.4</output></label><input id="a3" type="range" min="0" max="2" step=".1" value=".4"></div>
+    </div>
+    <div class="control"><label for="n">采样点数</label><select id="n"><option>256</option><option>512</option><option selected>1024</option><option>2048</option><option>4096</option></select></div>
+    <div class="control"><label for="duration">观察时长</label><select id="duration"><option value=".25">0.25 秒</option><option value=".5" selected>0.5 秒</option><option value="1">1 秒</option><option value="2">2 秒</option></select></div>
+    <div class="control"><label for="window">窗函数</label><select id="window"><option value="none">无（矩形窗）</option><option value="hann" selected>Hann 窗</option><option value="hamming">Hamming 窗</option></select></div>
+    <div class="buttons"><button class="primary" id="generate">▶ 生成并分析信号</button><button id="reset">↻ 恢复默认参数</button></div>
+    <p class="muted" style="margin-top:13px">提示：拖动滑块会自动更新。点击下方示例可以快速切换信号类型。</p>
+  </section>
+
+  <section class="middle">
+    <div class="card chart-card">
+      <h2>时域波形 <span class="pill">原始信号</span></h2>
+      <div class="muted">横轴是时间，纵轴是信号幅值。</div>
+      <canvas id="timeChart" class="chart" aria-label="时域波形图"></canvas>
+    </div>
+    <div class="card chart-card">
+      <h2>频域频谱 <span class="pill">FFT 结果</span></h2>
+      <div class="muted">横轴是频率，纵轴是归一化后的幅值。点击图表可读取附近频率。</div>
+      <canvas id="freqChart" class="chart" aria-label="频域频谱图"></canvas>
+      <div class="stats">
+        <div class="stat"><span>采样率</span><strong id="sampleRate">2048 Hz</strong></div>
+        <div class="stat"><span>频率间隔 Δf</span><strong id="resolution">2 Hz</strong></div>
+        <div class="stat"><span>奈奎斯特频率</span><strong id="nyquist">1024 Hz</strong></div>
+      </div>
+      <p id="readout" class="muted">频谱峰值将在这里显示。</p>
+    </div>
+  </section>
+
+  <aside class="card side">
+    <h2>傅里叶变换是什么？</h2>
+    <p>傅里叶变换是一种把信号从<strong>时域</strong>转换到<strong>频域</strong>的数学工具。它帮助我们观察一个复杂信号中包含哪些频率，以及各频率成分有多强。</p>
+    <h3>连续傅里叶变换</h3>
+    <div class="formula">\(X(f)=\int_{-\infty}^{\infty}x(t)e^{-i2\pi ft}\,dt\)</div>
+    <h3>离散傅里叶变换（DFT）</h3>
+    <div class="formula">\(X[k]=\sum_{n=0}^{N-1}x[n]e^{-i2\pi kn/N}\)</div>
+    <p><b>怎么看图？</b></p>
+    <ul class="bullet">
+      <li><b>时域图：</b>信号随时间怎样变化。</li>
+      <li><b>频域图：</b>信号包含哪些频率成分；明显的峰代表较强的频率成分。</li>
+      <li><b>振幅：</b>峰越高，该频率成分通常越强。</li>
+      <li><b>相位：</b>复数频谱还包含相位信息；本演示重点显示幅度谱。</li>
+    </ul>
+    <h3>三个关键概念</h3>
+    <p><b>采样率：</b>每秒采集多少个点。带限信号要避免混叠，采样率通常需高于最高信号频率的两倍，并配合抗混叠滤波。</p>
+    <p><b>频率间隔：</b>Δf = 采样率 ÷ 采样点数 = 1 ÷ 观测时长。观测更久通常有助于分辨相近频率。</p>
+    <p><b>窗函数：</b>有限长度截取可能导致频谱泄漏。Hann 等窗函数可减轻旁瓣泄漏，但也会改变谱峰形状与幅值。</p>
+  </aside>
+
+  <section class="card examples">
+    <h2>快速示例</h2>
+    <div class="example-grid">
+      <div class="example" data-kind="sine"><b>单一正弦波</b><canvas id="ex1"></canvas><p>理想情况下，主要只有一个频率成分。</p></div>
+      <div class="example" data-kind="square"><b>方波</b><canvas id="ex2"></canvas><p>包含基频和奇次谐波。</p></div>
+      <div class="example" data-kind="triangle"><b>三角波</b><canvas id="ex3"></canvas><p>也有谐波，高次成分通常衰减更快。</p></div>
+      <div class="example" data-kind="noise"><b>白噪声</b><canvas id="ex4"></canvas><p>能量分布较宽，单次频谱会有随机起伏。</p></div>
+    </div>
+  </section>
+  <section class="card takeaway">
+    <h2>核心结论</h2>
+    <ul class="bullet">
+      <li>复杂波形可以从频率成分的角度来理解。</li>
+      <li>FFT 是高效计算 DFT 的算法，不是另一种独立变换。</li>
+      <li>频谱分析结果受采样、观测时长、窗函数与噪声影响。</li>
+      <li>频域思路广泛用于音频、图像、通信、机械振动与科学计算。</li>
+    </ul>
+  </section>
+</main>
+<footer>纯 HTML / CSS / JavaScript 单文件演示；无需安装依赖或联网。频谱采用内置 radix-2 FFT 计算，幅度谱按单边谱方式显示。</footer>
+<script>
+(() => {
+ const $=id=>document.getElementById(id);
+ const controls=['kind','f1','a1','f2','a2','f3','a3','n','duration','window'];
+ let signal=[], spectrum=[], freqs=[], sampleRate=0, duration=.5, N=1024;
+ const fmt=(v,d=1)=>Number(v).toFixed(d);
+ function updateLabels(){
+   ['f1','f2','f3'].forEach(id=>$(id+'v').textContent=$(id).value+' Hz');
+   ['a1','a2','a3'].forEach(id=>$(id+'v').textContent=fmt($(id).value,1));
+ }
+ function wave(t){
+   const kind=$('kind').value, f1=+$('f1').value, a1=+$('a1').value, f2=+$('f2').value,a2=+$('a2').value,f3=+$('f3').value,a3=+$('a3').value;
+   if(kind==='sine')return a1*Math.sin(2*Math.PI*f1*t);
+   if(kind==='mixed')return a1*Math.sin(2*Math.PI*f1*t)+a2*Math.sin(2*Math.PI*f2*t)+a3*Math.sin(2*Math.PI*f3*t);
+   if(kind==='square') {let s=0;for(let k=1;k<=19;k+=2)s+=Math.sin(2*Math.PI*f1*k*t)/k;return a1*4/Math.PI*s;}
+   if(kind==='triangle'){let s=0;for(let k=1;k<=19;k+=2)s+=Math.pow(-1,(k-1)/2)*Math.sin(2*Math.PI*f1*k*t)/(k*k);return a1*8/(Math.PI*Math.PI)*s;}
+   if(kind==='saw'){let s=0;for(let k=1;k<=30;k++)s+=Math.sin(2*Math.PI*f1*k*t)/k;return a1*2/Math.PI*s;}
+   if(kind==='pulse')return ((t*f1)%1)<.15?a1:0;
+   if(kind==='noise')return (Math.random()*2-1)*a1;
+   return 0;
+ }
+ // In-place radix-2 Cooley-Tukey FFT.
+ function fft(re,im){
+   const n=re.length;
+   for(let i=1,j=0;i<n;i++){let bit=n>>1;for(;j&bit;bit>>=1)j^=bit;j^=bit;if(i<j){[re[i],re[j]]=[re[j],re[i]];[im[i],im[j]]=[im[j],im[i]];}}
+   for(let len=2;len<=n;len<<=1){
+     const angle=-2*Math.PI/len, wr0=Math.cos(angle),wi0=Math.sin(angle);
+     for(let i=0;i<n;i+=len){let wr=1,wi=0;for(let j=0;j<len/2;j++){
+       const u=i+j,v=i+j+len/2,vr=re[v]*wr-im[v]*wi,vi=re[v]*wi+im[v]*wr;
+       re[v]=re[u]-vr;im[v]=im[u]-vi;re[u]+=vr;im[u]+=vi;
+       const next=wr*wr0-wi*wi0;wi=wr*wi0+wi*wr0;wr=next;
+     }}
+   }
+ }
+ function analyze(){
+   updateLabels();N=+$('n').value;duration=+$('duration').value;sampleRate=N/duration;
+   signal=Array.from({length:N},(_,i)=>wave(i/sampleRate));
+   const re=signal.slice(),im=new Array(N).fill(0),win=$('window').value;
+   let sumW=0;
+   for(let i=0;i<N;i++){let w=1;if(win==='hann')w=.5*(1-Math.cos(2*Math.PI*i/(N-1)));else if(win==='hamming')w=.54-.46*Math.cos(2*Math.PI*i/(N-1));re[i]*=w;sumW+=w;}
+   fft(re,im);
+   freqs=[];spectrum=[];
+   for(let k=0;k<=N/2;k++){freqs.push(k*sampleRate/N);let mag=Math.hypot(re[k],im[k])/sumW;if(k!==0&&!(N%2===0&&k===N/2))mag*=2;spectrum.push(mag);}
+   $('sampleRate').textContent=fmt(sampleRate,0)+' Hz';
+   $('resolution').textContent=fmt(sampleRate/N,2)+' Hz';
+   $('nyquist').textContent=fmt(sampleRate/2,0)+' Hz';
+   const peaks=spectrum.map((a,k)=>({a,f:freqs[k],k})).filter(p=>p.k>0).sort((a,b)=>b.a-a.a).slice(0,5);
+   $('readout').textContent='主要峰值：'+peaks.slice(0,3).map(p=>`${fmt(p.f,2)} Hz（幅值 ${fmt(p.a,3)}）`).join('；')+'。窗函数：'+({'none':'矩形窗','hann':'Hann 窗','hamming':'Hamming 窗'}[win])+ '。';
+   drawLineChart($('timeChart'),Array.from({length:Math.min(N,1800)},(_,i)=>({x:i/sampleRate,y:signal[Math.floor(i*N/Math.min(N,1800))]})),{
+     xLabel:'时间 (s)',yLabel:'幅值',color:'#1769ff',xMin:0,xMax:duration,zero:true
+   });
+   const maxF=Math.min(50,sampleRate/2);
+   drawSpectrum($('freqChart'),freqs.map((f,i)=>({x:f,y:spectrum[i]})).filter(p=>p.x<=maxF),maxF);
+ }
+ function setupCanvas(canvas){
+   const dpr=window.devicePixelRatio||1,rect=canvas.getBoundingClientRect();
+   canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));
+   const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w:rect.width,h:rect.height};
+ }
+ function drawAxes(ctx,w,h,m,xMin,xMax,yMin,yMax,xLabel,yLabel){
+   ctx.font='11px system-ui, sans-serif';ctx.lineWidth=1;ctx.strokeStyle='#e5ebf3';ctx.fillStyle='#5f6f86';
+   for(let i=0;i<=5;i++){let x=m.l+(w-m.l-m.r)*i/5;ctx.beginPath();ctx.moveTo(x,m.t);ctx.lineTo(x,h-m.b);ctx.stroke();ctx.fillText((xMin+(xMax-xMin)*i/5).toFixed(xMax<=2?2:0),x-10,h-m.b+17);}
+   for(let i=0;i<=4;i++){let y=m.t+(h-m.t-m.b)*i/4;ctx.beginPath();ctx.moveTo(m.l,y);ctx.lineTo(w-m.r,y);ctx.stroke();ctx.fillText((yMax-(yMax-yMin)*i/4).toFixed(yMax<=2?2:1),3,y+4);}
+   ctx.strokeStyle='#8c9bb0';ctx.beginPath();ctx.moveTo(m.l,m.t);ctx.lineTo(m.l,h-m.b);ctx.lineTo(w-m.r,h-m.b);ctx.stroke();
+   ctx.fillStyle='#30415a';ctx.textAlign='center';ctx.font='12px system-ui,sans-serif';ctx.fillText(xLabel,(m.l+w-m.r)/2,h-5);
+   ctx.save();ctx.translate(13,(m.t+h-m.b)/2);ctx.rotate(-Math.PI/2);ctx.fillText(yLabel,0,0);ctx.restore();ctx.textAlign='left';
+ }
+ function drawLineChart(canvas,data,opt){
+   const {ctx,w,h}=setupCanvas(canvas);ctx.clearRect(0,0,w,h);const m={l:42,r:12,t:14,b:32};
+   const maxAbs=Math.max(.1,...data.map(p=>Math.abs(p.y))),yMin=-maxAbs*1.12,yMax=maxAbs*1.12;
+   drawAxes(ctx,w,h,m,opt.xMin,opt.xMax,yMin,yMax,opt.xLabel,opt.yLabel);
+   const X=x=>m.l+(x-opt.xMin)/(opt.xMax-opt.xMin)*(w-m.l-m.r),Y=y=>m.t+(yMax-y)/(yMax-yMin)*(h-m.t-m.b);
+   ctx.strokeStyle=opt.color;ctx.lineWidth=1.7;ctx.beginPath();data.forEach((p,i)=>i?ctx.lineTo(X(p.x),Y(p.y)):ctx.moveTo(X(p.x),Y(p.y)));ctx.stroke();
+ }
+ function drawSpectrum(canvas,data,maxF){
+   const {ctx,w,h}=setupCanvas(canvas);ctx.clearRect(0,0,w,h);const m={l:42,r:12,t:15,b:32};
+   const ymax=Math.max(.1,...data.map(p=>p.y))*1.18;
+   drawAxes(ctx,w,h,m,0,maxF,0,ymax,'频率 (Hz)','幅值');
+   const X=x=>m.l+x/maxF*(w-m.l-m.r),Y=y=>h-m.b-y/ymax*(h-m.t-m.b);
+   ctx.strokeStyle='#e34b4b';ctx.lineWidth=1.4;ctx.beginPath();
+   data.forEach(p=>{ctx.moveTo(X(p.x),Y(0));ctx.lineTo(X(p.x),Y(p.y));});ctx.stroke();
+   // Label the strongest non-DC peaks.
+   const peaks=data.filter(p=>p.x>0).slice().sort((a,b)=>b.y-a.y).slice(0,5);
+   ctx.fillStyle='#d52f36';
+   peaks.forEach(p=>{ctx.beginPath();ctx.arc(X(p.x),Y(p.y),3,0,Math.PI*2);ctx.fill();});
+   canvas.onclick=e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,mx=(x-m.l)/(w-m.l-m.r)*maxF;let nearest=data.reduce((a,b)=>Math.abs(b.x-mx)<Math.abs(a.x-mx)?b:a,data[0]);$('readout').textContent=`你选择的附近频率：${fmt(nearest.x,2)} Hz，幅值 ${fmt(nearest.y,4)}。`};
+ }
+ function drawMini(canvas,type){
+   const {ctx,w,h}=setupCanvas(canvas);ctx.clearRect(0,0,w,h);let arr=[];
+   for(let i=0;i<160;i++){const t=i/160*.5;let v;if(type==='sine')v=Math.sin(2*Math.PI*10*t);else if(type==='square')v=Math.sin(2*Math.PI*8*t)>=0?1:-1;else if(type==='triangle')v=2/Math.PI*Math.asin(Math.sin(2*Math.PI*6*t));else v=(Math.random()*2-1)*.8;arr.push(v);}
+   ctx.strokeStyle='#1769ff';ctx.lineWidth=1.3;ctx.beginPath();arr.forEach((v,i)=>{const x=i/(arr.length-1)*w,y=h/2-v*h*.39;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();
+ }
+ function setKind(kind){$('kind').value=kind; if(kind==='sine'){$('a1').value=1;$('f1').value=10;$('a2').value=0;$('a3').value=0;}if(kind==='square'||kind==='triangle'||kind==='saw'){$('f1').value=8;$('a1').value=1;}if(kind==='noise'){$('a1').value=1;}analyze();}
+ controls.forEach(id=>$(id).addEventListener('input',analyze));
+ $('generate').addEventListener('click',analyze);
+ $('reset').addEventListener('click',()=>{ $('kind').value='mixed';$('f1').value=5;$('a1').value=1;$('f2').value=15;$('a2').value=.6;$('f3').value=30;$('a3').value=.4;$('n').value='1024';$('duration').value='.5';$('window').value='hann';analyze();});
+ document.querySelectorAll('.example').forEach(el=>el.addEventListener('click',()=>setKind(el.dataset.kind)));
+ function allDraw(){analyze();['sine','square','triangle','noise'].forEach((t,i)=>drawMini($('ex'+(i+1)),t));}
+ window.addEventListener('resize',()=>{clearTimeout(window.__fftResize);window.__fftResize=setTimeout(allDraw,100);});
+ allDraw();
+})();
+</script>
+</body>
+</html>
